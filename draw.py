@@ -116,53 +116,58 @@ def scene_strikes(draw, box):
         for rr, col in [(r, (255, 190, 60)), (r * 0.6, (255, 120, 30)),
                         (r * 0.3, (255, 230, 150))]:
             draw.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=col)
-    missile(draw, x0 + 420, y0 + 95, -38, 0.9)
+    missile(draw, x0 + 375, y0 + 95, -38, 0.8)
     missile(draw, x0 + 180, y0 + 120, -25, 0.7)
     skyline(draw, x0, y0 + 150, x1, y1 - 52, (16, 20, 34))
     # river + bridge
     draw.rectangle([x0, y1 - 52, x1, y1], fill=(30, 80, 120))
     draw.line([x0, y1 - 52, x1, y1 - 52], fill=INK, width=3)
-    for bx in range(x0 + 30, x1 - 30, 110):
+    for bx in range(x0 + 30, x1 - 120, 110):
         draw.arc([bx, y1 - 96, bx + 90, y1 - 20], 180, 360,
                  fill=(255, 214, 90), width=4)
     draw.rectangle([x0, y1 - 46, x1, y1 - 40], fill=(200, 200, 200))
 
 
-def scene_summit(draw, box):
+def scene_markets(draw, box):
     x0, y0, x1, y1 = box
-    draw.rectangle(box, fill=(232, 222, 196))
-    # three flags on poles
-    cols = [(178, 34, 34), (255, 255, 255), (200, 30, 30)]
-    for i, c in enumerate(cols):
-        fx = x0 + 60 + i * 90
-        draw.line([fx, y0 + 18, fx, y1 - 30], fill=INK, width=4)
-        draw.rectangle([fx, y0 + 18, fx + 62, y0 + 52], fill=c,
+    draw.rectangle(box, fill=(250, 240, 225))
+    draw.text((x0 + 16, y0 + 8), "AI SELLOFF", font=font(BOLD, 20), fill=RED)
+    for gy in range(y0 + 40, y1 - 30, 26):
+        draw.line([x0 + 14, gy, x1 - 14, gy], fill=(220, 210, 190), width=1)
+    pts = [(x0 + 24, y0 + 48), (x0 + 70, y0 + 62), (x0 + 110, y0 + 56),
+           (x0 + 155, y0 + 82), (x0 + 200, y0 + 78), (x0 + 245, y0 + 104),
+           (x0 + 274, y0 + 116)]
+    draw.line(pts, fill=RED, width=5, joint="curve")
+    ex, ey = pts[-1]
+    draw.polygon([(ex, ey + 12), (ex - 16, ey - 6), (ex + 2, ey - 12)],
+                 fill=RED)
+    for i, bh in enumerate([16, 28, 20, 36]):
+        bx = x0 + 40 + i * 62
+        draw.rectangle([bx, y1 - 26 - bh, bx + 34, y1 - 26],
+                       fill=(178, 34, 34), outline=INK, width=2)
+
+
+def scene_estonia(draw, box):
+    x0, y0, x1, y1 = box
+    draw.rectangle(box, fill=(200, 220, 235))
+    # Estonian flag (blue-black-white) on a pole
+    draw.line([x0 + 34, y0 + 16, x0 + 34, y1 - 28], fill=INK, width=4)
+    for i, c in enumerate([(0, 114, 206), (0, 0, 0), (255, 255, 255)]):
+        draw.rectangle([x0 + 34, y0 + 16 + i * 14, x0 + 96, y0 + 30 + i * 14],
+                       fill=c, outline=INK, width=1)
+    draw.text((x0 + 140, y0 + 24), "CLOSED", font=font(BOLD, 26), fill=RED)
+    # road + closed barrier arm (red/white stripes)
+    draw.rectangle([x0, y1 - 28, x1, y1], fill=(90, 90, 90))
+    for px in (x0 + 130, x1 - 30):
+        draw.rectangle([px - 5, y0 + 66, px + 5, y1 - 28], fill=(240, 240, 240),
                        outline=INK, width=2)
-    # table with three leaders (simple figures)
-    draw.rectangle([x0 + 30, y1 - 62, x1 - 30, y1 - 34], fill=(120, 70, 40),
-                   outline=INK, width=2)
-    for i, suit in enumerate([(18, 42, 78), (60, 60, 60), (90, 20, 20)]):
-        cx = x0 + 80 + i * 90
-        draw.ellipse([cx - 20, y1 - 118, cx + 20, y1 - 78], fill=(232, 200, 160),
-                     outline=INK, width=2)
-        draw.polygon([(cx - 26, y1 - 62), (cx + 26, y1 - 62),
-                      (cx + 18, y1 - 84), (cx - 18, y1 - 84)],
-                     fill=suit, outline=INK)
-
-
-def scene_missile_sea(draw, box):
-    x0, y0, x1, y1 = box
-    draw.rectangle(box, fill=(168, 205, 230))
-    draw.ellipse([x0 + 210, y0 + 12, x0 + 262, y0 + 64], fill=(255, 240, 160),
-                 outline=(220, 180, 60), width=2)
-    missile(draw, x0 + 150, y0 + 62, -50, 0.9)
-    for k in range(4):
-        draw.arc([x0 + 40 + k * 60, y0 + 120 + k * 8,
-                  x0 + 120 + k * 60, y0 + 150 + k * 8], 200, 340,
-                 fill=(255, 255, 255), width=4)
-    draw.rectangle([x0, y1 - 34, x1, y1], fill=(28, 90, 140))
+    for i in range(6):
+        sx = x0 + 130 + i * 24
+        draw.polygon([(sx, y0 + 66), (sx + 24, y0 + 66),
+                      (sx + 12, y0 + 86), (sx - 12, y0 + 86)],
+                     fill=RED if i % 2 == 0 else (255, 255, 255), outline=INK)
     for wx in range(x0 + 12, x1 - 12, 34):
-        draw.line([wx, y1 - 18, wx + 16, y1 - 18], fill=(255, 255, 255), width=3)
+        draw.line([wx, y1 - 14, wx + 16, y1 - 14], fill=(255, 255, 255), width=3)
 
 
 def scene_poland(draw, box):
@@ -181,20 +186,25 @@ def scene_poland(draw, box):
         draw.text((qx, qy), "?", font=font(BOLD, 44), fill=RED)
 
 
-def scene_drones(draw, box):
+def scene_trump_putin(draw, box):
     x0, y0, x1, y1 = box
-    draw.rectangle(box, fill=(196, 216, 235))
-    for i, (dx, dy) in enumerate([(70, 50), (150, 80), (230, 45),
-                                  (110, 120), (200, 125)]):
-        cx, cy = x0 + dx, y0 + dy
-        draw.ellipse([cx - 26, cy - 8, cx - 8, cy + 8], outline=INK, width=2)
-        draw.ellipse([cx + 8, cy - 8, cx + 26, cy + 8], outline=INK, width=2)
-        draw.rectangle([cx - 20, cy - 6, cx + 20, cy + 6], fill=(60, 70, 90),
-                       outline=INK, width=2)
-        draw.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=RED)
-    draw.rectangle([x0 + 40, y1 - 46, x1 - 40, y1 - 20], fill=(255, 214, 90),
-                   outline=INK, width=2)
-    draw.text((x0 + 62, y1 - 44), "UK  >  UKRAINE", font=font(BOLD, 20), fill=INK)
+    draw.rectangle(box, fill=(235, 228, 210))
+    # speech bubble
+    draw.rounded_rectangle([x0 + 30, y0 + 12, x1 - 30, y0 + 52], radius=12,
+                           fill=(255, 255, 255), outline=INK, width=2)
+    draw.polygon([(x0 + 90, y0 + 52), (x0 + 110, y0 + 52), (x0 + 96, y0 + 68)],
+                 fill=(255, 255, 255), outline=INK)
+    draw.text((x0 + 52, y0 + 22), "\u201cTIRED\u201d \u2014 TRUMP",
+              font=font(BOLD, 20), fill=RED)
+    # two figures shaking hands
+    for cx, suit in [(x0 + 95, (18, 42, 78)), (x0 + 205, (90, 20, 20))]:
+        draw.ellipse([cx - 22, y0 + 76, cx + 22, y0 + 118], fill=(232, 200, 160),
+                     outline=INK, width=2)
+        draw.polygon([(cx - 28, y1 - 6), (cx + 28, y1 - 6),
+                      (cx + 20, y0 + 118), (cx - 20, y0 + 118)],
+                     fill=suit, outline=INK)
+    draw.line([x0 + 122, y0 + 126, x0 + 178, y0 + 126],
+              fill=(232, 200, 160), width=8)
 
 
 def scene_cop(draw, box):
@@ -216,34 +226,37 @@ def scene_cop(draw, box):
     draw.line([ox - 26, oy + 30, ox + 26, oy - 30], fill=RED, width=6)
 
 
-def scene_rose(draw, box):
+def scene_harris_macron(draw, box):
     x0, y0, x1, y1 = box
-    draw.rectangle(box, fill=(120, 170, 90))
-    draw.polygon([(x0 + 150, y1 - 28), (x0 + 60, y0 + 78),
-                  (x0 + 240, y0 + 78)], fill=(210, 180, 130),
-                 outline=(255, 255, 255), width=3)
-    draw.ellipse([x0 + 128, y0 + 92, x0 + 172, y0 + 136], fill=(255, 255, 255),
-                 outline=RED, width=3)
-    draw.arc([x0 + 134, y0 + 96, x0 + 150, y0 + 132], 300, 60, fill=RED, width=2)
-    draw.arc([x0 + 150, y0 + 96, x0 + 166, y0 + 132], 120, 240, fill=RED, width=2)
-    # bat
-    draw.line([x0 + 235, y0 + 30, x0 + 195, y0 + 110], fill=(150, 100, 50),
-              width=10)
-    draw.text((x0 + 12, y0 + 10), "4,256 HITS", font=font(BOLD, 22), fill=(255, 255, 255))
+    draw.rectangle(box, fill=(215, 228, 240))
+    # French flag
+    for i, c in enumerate([(0, 85, 164), (255, 255, 255), (239, 65, 53)]):
+        draw.rectangle([x0 + 18 + i * 16, y0 + 14, x0 + 34 + i * 16, y0 + 40],
+                       fill=c, outline=INK, width=1)
+    # Eiffel Tower silhouette with arched legs
+    cx = x0 + 150
+    draw.polygon([(cx - 62, y1 - 6), (cx - 14, y0 + 14), (cx + 14, y0 + 14),
+                  (cx + 62, y1 - 6)], fill=(70, 70, 90), outline=INK)
+    draw.polygon([(cx - 30, y1 - 6), (cx + 30, y1 - 6), (cx, y0 + 66)],
+                 fill=(215, 228, 240))
+    draw.rectangle([cx - 34, y0 + 78, cx + 34, y0 + 88], fill=(247, 243, 234),
+                   outline=INK, width=2)
+    draw.rectangle([cx - 18, y0 + 44, cx + 18, y0 + 52], fill=(247, 243, 234),
+                   outline=INK, width=2)
 
 TILES = [
-    ("SUMMIT IN SHENZHEN", "Trump, Xi & Putin meet \u2014 no Ukraine deal",
-     scene_summit, (232, 222, 196)),
-    ("NORTH KOREA", "Fires ballistic missile into the sea, Seoul says",
-     scene_missile_sea, (168, 205, 230)),
+    ("ASIAN MARKETS", "Equities tumble as AI selloff deepens",
+     scene_markets, (250, 240, 225)),
+    ("ESTONIA", "Closes Russia border for 6 months",
+     scene_estonia, (200, 220, 235)),
     ("POLAND", "Probes unknown objects at border",
      scene_poland, (210, 225, 200)),
-    ("BRITAIN AIDS KYIV", "UK pledges 1,000+ drones, \u00a3260m",
-     scene_drones, (196, 216, 235)),
+    ("TRUMP ON PUTIN", "\u201cTired\u201d Putin ready for a deal, Trump says",
+     scene_trump_putin, (235, 228, 210)),
     ("COP31, ANTALYA", "Final day: draft deal drops all fossil fuels",
      scene_cop, (206, 232, 210)),
-    ("BASEBALL", "Trump pardons Pete Rose, posthumously",
-     scene_rose, (120, 170, 90)),
+    ("PARIS", "Macron receives Harris in courtesy visit",
+     scene_harris_macron, (215, 228, 240)),
 ]
 
 
