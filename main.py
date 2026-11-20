@@ -11,10 +11,13 @@ import sys
 
 
 def main():
-    in_dir = os.environ.get("MAKEFUN_INPUT_DIR", "/input")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    src = os.path.join(in_dir, "news.png")
+    src = os.path.join(script_dir, "news.png")
     dst = os.path.join(out_dir, "entry.png")
+    if not os.path.isfile(src):
+        print(f"error: source image not found: {src}", file=sys.stderr)
+        sys.exit(1)
     os.makedirs(out_dir, exist_ok=True)
     shutil.copyfile(src, dst)
     # Sanity check: the output must start with the PNG signature.
